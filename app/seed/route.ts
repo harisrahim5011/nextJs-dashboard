@@ -1,8 +1,13 @@
 import bcrypt from 'bcrypt';
 import postgres from 'postgres';
+import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
+import { drizzle } from 'drizzle-orm/node-postgres' 
+import { Pool } from 'pg' 
+// import * as schema from './schema'
 import { invoices, customers, revenue, users } from '../lib/placeholder-data';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+const connectionString = process.env.DATABASE_URL!
 
 async function seedUsers() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
