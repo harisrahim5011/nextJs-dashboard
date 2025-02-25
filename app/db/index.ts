@@ -3,9 +3,9 @@ import { drizzle } from 'drizzle-orm/neon-http';
 import { eq } from 'drizzle-orm';
 import { isArray } from 'util';
 import bcrypt from 'bcryptjs';
-import {invoices, users} from '../lib/placeholder-data'
-import { invoicesTable, usersTable } from './schema';
-  
+import { invoices, users, customers, revenue } from '../lib/placeholder-data'
+import { customersTable, invoicesTable, revenueTable, usersTable } from './schema';
+
 const db = drizzle(process.env.DATABASE_URL!);
 
 
@@ -13,14 +13,14 @@ const db = drizzle(process.env.DATABASE_URL!);
 
 
 // Function to create a new user with a hashed password
-export const createUser = async (users) => {
+export const createUser = async (usersData) => {
   // Hash the password
-  const hashedPassword = await bcrypt.hash(users.password, 10); // 10 is the salt rounds
+  const hashedPassword = await bcrypt.hash(usersData.password, 10); // 10 is the salt rounds
 
   // Insert user into the database with the hashed password
   const result = await db.insert(usersTable).values({
-    name : users.name,
-    email: users.email,
+    name: usersData.name,
+    email: usersData.email,
     password: hashedPassword,
   });
 
@@ -63,15 +63,15 @@ export const createUser = async (users) => {
 //   }
 // }
 
-const insertInvoices = async (invoices) => {
+const insertInvoices = async (invoicesData) => {
   try {
     // Insert multiple invoices and handle conflicts
     const insertedInvoices = await db
       .insert(invoicesTable)
-      .values(invoices) // The data you want to insert
-      .onConflictDoNothing({ target: invoices.customer_id }) // Handle conflict on the id column
-      .returning(); // Optionally, return the inserted rows (you can also return specific fields)
-      // .onConflict((conflict) => conflict.column(invoices.id).doNothing()) // Handle conflict on the id column
+      .values(invoicesData) // The data you want to insert
+      .onConflictDoNothing({ target: invoicesData.customer_id }); // Handle conflict on the id column
+    // .returning(); // Optionally, return the inserted rows (you can also return specific fields)
+    // .onConflict((conflict) => conflict.column(invoices.id).doNothing()) // Handle conflict on the id column
 
     return insertedInvoices;
   } catch (error) {
@@ -81,16 +81,64 @@ const insertInvoices = async (invoices) => {
 };
 
 // Call the insert function for invoices
-insertInvoices(invoices).then((result) => {
-  console.log('Inserted invoices:', result);
-}).catch((err) => {
-  console.error('Error:', err);
-});
+// insertInvoices(invoices).then((result) => {
+//   console.log('Inserted invoices:', result);
+// }).catch((err) => {
+//   console.error('Error:', err);
+// });
+
+//function to insert customer
+const insertCustomer = async (customerData) => {
+  try {
+    const insertedCustomer = await db
+      .insert(customersTable)
+      .values(customerData);
+    // .returning(); // Optionally, you can return the inserted data
+
+    console.log('Inserted customer:', insertedCustomer);
+    return insertedCustomer;
+  } catch (error) {
+    console.error('Error inserting customer:', error);
+    throw error;
+  }
+};
 
 
 function returning() {
   throw new Error('Function not implemented.');
 }
+
+// insert revenue
+const insertRevenue = async (revenueData) => {
+  try {
+    const insertedRevenue = await db
+      .insert(revenueTable)
+      .values(revenueData);
+    // .returning(); // Optionally, you can return the inserted data
+
+    console.log('Inserted revenue:', insertedRevenue);
+    return insertedRevenue;
+  } catch (error) {
+    console.error('Error inserting revenue:', error);
+    throw error;
+  }
+};
+
+
+
+async function main() {
+  // call to Insert the revenue record
+  insertRevenue(revenue);
+  // call Insert the customer
+  insertCustomer(customers);
+  //call to insert invoices
+  insertInvoices(invoices)
+  //call to insert customers
+  createUser(customers)
+}
+
+main();
+
 // async function main() {
 //   const user: typeof usersTable.$inferInsert = {
 //     name: 'John',
@@ -104,14 +152,14 @@ function returning() {
 //   const users = await db.select().from(usersTable);
 //   console.log('Getting all users from the database: \n',users )
 
-  /*
-  const users: {
-    id: number;
-    name: string;
-    age: number;
-    email: string;
-  }[]
-  */
+/*
+const users: {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+}[]
+*/
 
 //   await db
 //     .update(usersTable)

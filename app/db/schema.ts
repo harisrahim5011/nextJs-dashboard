@@ -1,4 +1,4 @@
-import { integer, pgTable, varchar, serial, uuid,date } from "drizzle-orm/pg-core";
+import { integer, pgTable, varchar, serial, uuid, date } from "drizzle-orm/pg-core";
 import { customers, invoices, revenue } from "../lib/placeholder-data";
 
 
@@ -31,4 +31,19 @@ export const invoicesTable = pgTable('invoices', {
 });
 
 // customers
+
+// Define the customer schema
+export const customersTable = pgTable('customers', {
+  id: uuid('id').primaryKey(), // UUID as primary key
+  name: varchar('name', { length: 255 }).notNull(), // Customer's name
+  email: varchar('email', { length: 255 }).notNull().unique(), // Customer's email, unique
+  image_url: varchar('image_url', { length: 255 }), // URL for the customer's image
+});
+
+
 // revenue
+// Define the revenue schema
+export const revenueTable = pgTable('revenue', {
+  month: varchar('month', { length: 4 }).notNull().unique(), // Month as a 4-character string (e.g., 'JAN', 'FEB')
+  revenue: integer('revenue').notNull(), // Revenue as an integer (e.g., total revenue for the month)
+});
