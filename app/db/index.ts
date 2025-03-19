@@ -5,6 +5,7 @@ import { isArray } from 'util';
 import bcrypt from 'bcryptjs';
 import { invoices, users, customers, revenue } from '../lib/placeholder-data'
 import { customersTable, invoicesTable, revenueTable, usersTable } from './schema';
+import { PgTableWithColumns } from 'drizzle-orm/pg-core';
 
 const db = drizzle(process.env.DATABASE_URL!);
 
@@ -19,6 +20,7 @@ export const createUser = async (usersData) => {
 
   // Insert user into the database with the hashed password
   const result = await db.insert(usersTable).values({
+    id: usersData.id,
     name: usersData.name,
     email: usersData.email,
     password: hashedPassword,
@@ -69,8 +71,9 @@ const insertInvoices = async (invoicesData) => {
     const insertedInvoices = await db
       .insert(invoicesTable)
       .values(invoicesData) // The data you want to insert
-      .onConflictDoNothing({ target: invoicesData.customer_id }); // Handle conflict on the id column
-    // .returning(); // Optionally, return the inserted rows (you can also return specific fields)
+      .onConflictDoNothing(); // Handle conflict on the id column
+      // .onConflictDoNothing({ target: invoicesTable.customer_id }); // Handle conflict on the id column
+      // .returning(); // Optionally, return the inserted rows (you can also return specific fields)
     // .onConflict((conflict) => conflict.column(invoices.id).doNothing()) // Handle conflict on the id column
 
     return insertedInvoices;
@@ -128,16 +131,37 @@ const insertRevenue = async (revenueData) => {
 
 async function main() {
   // call to Insert the revenue record
-  insertRevenue(revenue);
+  // insertRevenue(revenue);
+  // revenue.forEach((rev) => insertRevenue(rev).catch((err) => console.error('Error creating user:', err))); //working
   // call Insert the customer
-  insertCustomer(customers);
+  // insertCustomer(customers);
+  // customers.forEach((customer) => insertCustomer(customer).catch((err) => console.error('Error creating user:', err)));//working
   //call to insert invoices
-  insertInvoices(invoices)
-  //call to insert customers
-  createUser(customers)
+  // insertInvoices(invoices)
+  invoices.forEach((invoice) => insertInvoices(invoice).catch((err) => console.error('Error creating user:', err)));//working
+  //call to insert user
+  // createUser(users)
+  // users.forEach((user) => createUser(user).catch((err) => console.error('Error creating user:', err)));//working
+
 }
 
 main();
+// customersTable, invoicesTable, revenueTable, usersTable 
+//delete table rows
+async function deleteTable(params) {
+  try {
+    await db.delete(params);
+    console.log('deleted successfully')
+  } catch (error) {
+    console.error('error occured while trying deleting a table ', error)
+    throw error
+  }
+}
+
+// deleteTable(customersTable);
+// deleteTable(invoicesTable);
+// deleteTable(revenueTable);
+// deleteTable(usersTable);
 
 // async function main() {
 //   const user: typeof usersTable.$inferInsert = {
