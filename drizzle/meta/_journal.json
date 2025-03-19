@@ -15,6 +15,41 @@
       "when": 1740331730229,
       "tag": "0001_usersTable",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1740491349963,
+      "tag": "0002_absurd_lord_tyger",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1740494689271,
+      "tag": "0003_shocking_wallop",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1740497162582,
+      "tag": "0004_cynical_blazing_skull",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1740505037168,
+      "tag": "0005_gifted_spirit",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1740505406907,
+      "tag": "0006_worthless_queen_noir",
+      "breakpoints": true
     }
   ]
 }
