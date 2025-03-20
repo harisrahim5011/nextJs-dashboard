@@ -1,4 +1,4 @@
-import { pgTable, unique, varchar, integer, uuid, foreignKey, date } from "drizzle-orm/pg-core"
+import { pgTable, unique, varchar, integer, uuid, foreignKey, date, serial } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 
@@ -29,7 +29,9 @@ export const customers = pgTable("customers", {
 ]);
 
 export const invoices = pgTable("invoices", {
-	id: integer().primaryKey().generatedAlwaysAsIdentity(),
+	// id: integer().primaryKey(),
+	// id: serial('id').primaryKey(),
+	id: uuid("id").primaryKey().defaultRandom(),
 	customerId: uuid("customer_id").notNull(),
 	amount: integer().notNull(),
 	status: varchar({ length: 255 }).notNull(),
