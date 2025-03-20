@@ -1,8 +1,9 @@
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/neon-http';
+import argon2 from 'argon2';
 import { eq } from 'drizzle-orm';
 import { isArray } from 'util';
-import bcrypt from 'bcryptjs';
+// import bcrypt from 'bcryptjs';
 import { invoices, users, customers, revenue } from '../lib/placeholder-data'
 import { customersTable, invoicesTable, revenueTable, usersTable } from './schema';
 import { PgTableWithColumns } from 'drizzle-orm/pg-core';
@@ -12,11 +13,12 @@ const db = drizzle(process.env.DATABASE_URL!);
 
 // services/userService.js
 
-
 // Function to create a new user with a hashed password
 export const createUser = async (usersData) => {
   // Hash the password
-  const hashedPassword = await bcrypt.hash(usersData.password, 10); // 10 is the salt rounds
+  // const hashedPassword = await bcrypt.hash(usersData.password, 10); // 10 is the salt rounds
+  const hashedPassword = await argon2.hash(usersData.password); // 10 is the salt rounds
+
 
   // Insert user into the database with the hashed password
   const result = await db.insert(usersTable).values({
