@@ -15,7 +15,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
       `userSearchParams is ${searchParams} & type  ${typeof searchParams}`
     );
     // const params = new URLSearchParams(searchParams);
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams.toString());
     console.log(
       `before URLSearchParams is ${params} & type is  ${typeof params}`
     );
