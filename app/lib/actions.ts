@@ -59,5 +59,4 @@ export async function deleteInvoice(id: string) {
     WHERE id = ${id}
   `;
   revalidatePath('/dashboard/invoices');
-  redirect('/dashboard/invoices');
 }
