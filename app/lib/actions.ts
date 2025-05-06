@@ -3,6 +3,8 @@ import { z } from 'zod';
 import postgres from 'postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -64,20 +66,20 @@ export async function createInvoice(prevState: State, formData: FormData) {
   redirect('/dashboard/invoices');
 }
 
-export async function updateInvoice(id: string, prevState : State, formData: FormData) {
+export async function updateInvoice(id: string, prevState: State, formData: FormData) {
   const validatedFields = UpdateInvoice.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
   });
-  if(!validatedFields.success) {
+  if (!validatedFields.success) {
     console.log('validatedFields', validatedFields);
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Missing Fields. Failed to Update Invoice.',
     };
   }
-  const { customerId, amount, status } = validatedFields.data;  
+  const { customerId, amount, status } = validatedFields.data;
   const amountInCents = amount * 100;
   try {
     await sql`
@@ -107,4 +109,20 @@ export async function deleteInvoice(id: string) {
   }
 
   revalidatePath('/dashboard/invoices');
+}
+
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError && error.message === 'CredentialsSignin') {
+      return 'Invalid credentials.';
+    } // Optionally log unexpected errors
+    // console.error('Authentication error:', error);
+    throw error; // rethrow only if it's unexpected
+
+  }
 }
