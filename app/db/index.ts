@@ -3,7 +3,7 @@ import { drizzle } from 'drizzle-orm/neon-http';
 import argon2 from 'argon2';
 
 // import bcrypt from 'bcryptjs';
-import { customersTable, invoicesTable, revenueTable, usersTable } from './schema';
+import { usersTable } from './schema';
 
 const db = drizzle(process.env.DATABASE_URL!);
 
@@ -14,24 +14,24 @@ interface UserData {
   password: string;
 }
 
-interface InvoiceData {
-  customer_id: string; // Foreign key to customers
-  amount: number;
-  status: 'paid' | 'pending';
-  date: string; // Date in string format (ISO 8601)
-}
+// interface InvoiceData {
+//   customer_id: string; // Foreign key to customers
+//   amount: number;
+//   status: 'paid' | 'pending';
+//   date: string; // Date in string format (ISO 8601)
+// }
 
-interface CustomerData {
-  id: string;
-  name: string;
-  email: string;
-  image_url: string;
-}
+// interface CustomerData {
+//   id: string;
+//   name: string;
+//   email: string;
+//   image_url: string;
+// }
 
-interface RevenueData {
-  month: string;
-  revenue: number;
-}
+// interface RevenueData {
+//   month: string;
+//   revenue: number;
+// }
 // services/userService.js
 
 // Function to create a new user with a hashed password
@@ -130,9 +130,9 @@ export const createUser = async (usersData: UserData) => {
 // };
 
 
-function returning() {
-  throw new Error('Function not implemented.');
-}
+// function returning() {
+//   throw new Error('Function not implemented.');
+// }
 
 // insert revenue
 // const insertRevenue = async (revenueData: RevenueData) => {
@@ -152,21 +152,21 @@ function returning() {
 
 
 
-async function main() {
-  // call to Insert the revenue record
-  // insertRevenue(revenue);
-  // revenue.forEach((rev) => insertRevenue(rev).catch((err) => console.error('Error creating user:', err))); //working
-  // call Insert the customer
-  // insertCustomer(customers);
-  // customers.forEach((customer) => insertCustomer(customer).catch((err) => console.error('Error creating user:', err)));//working
-  //call to insert invoices
-  // insertInvoices(invoices)
-  // invoices.forEach((invoice) => insertInvoices([invoice]).catch((err) => console.error('Error creating user:', err)));//working
-  //call to insert user
-  // createUser(users)
-  // users.forEach((user) => createUser(user).catch((err) => console.error('Error creating user:', err)));//working
+// async function main() {
+//   // call to Insert the revenue record
+//   // insertRevenue(revenue);
+//   // revenue.forEach((rev) => insertRevenue(rev).catch((err) => console.error('Error creating user:', err))); //working
+//   // call Insert the customer
+//   // insertCustomer(customers);
+//   // customers.forEach((customer) => insertCustomer(customer).catch((err) => console.error('Error creating user:', err)));//working
+//   //call to insert invoices
+//   // insertInvoices(invoices)
+//   // invoices.forEach((invoice) => insertInvoices([invoice]).catch((err) => console.error('Error creating user:', err)));//working
+//   //call to insert user
+//   // createUser(users)
+//   // users.forEach((user) => createUser(user).catch((err) => console.error('Error creating user:', err)));//working
 
-}
+// }
 
 // main();
 // customersTable, invoicesTable, revenueTable, usersTable 

@@ -160,7 +160,7 @@ async function seedRevenue() {
 
 export async function GET() {
   try {
-    await sql.begin((trx) => [
+    await sql.begin(() => [
       seedUsers(),
       seedCustomers(),
       seedInvoices(),
