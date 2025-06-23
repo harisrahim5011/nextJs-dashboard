@@ -5,7 +5,6 @@ import argon2 from 'argon2';
 // import bcrypt from 'bcryptjs';
 import { customersTable, invoicesTable, revenueTable, usersTable } from './schema';
 
-
 const db = drizzle(process.env.DATABASE_URL!);
 
 interface UserData {
