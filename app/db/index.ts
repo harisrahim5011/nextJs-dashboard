@@ -1,12 +1,10 @@
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/neon-http';
 import argon2 from 'argon2';
-import { eq } from 'drizzle-orm';
-import { isArray } from 'util';
+
 // import bcrypt from 'bcryptjs';
-import { invoices, users, customers, revenue } from '../lib/placeholder-data'
 import { customersTable, invoicesTable, revenueTable, usersTable } from './schema';
-import { PgTableWithColumns } from 'drizzle-orm/pg-core';
+
 
 const db = drizzle(process.env.DATABASE_URL!);
 
