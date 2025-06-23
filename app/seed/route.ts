@@ -1,9 +1,7 @@
 // import bcrypt from 'bcrypt';
 import argon2 from 'argon2';
 import postgres from 'postgres';
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
-import { drizzle } from 'drizzle-orm/node-postgres'
-import { Pool } from 'pg'
+
 // import * as schema from './schema'
 import { invoices, customers, revenue, users } from '../lib/placeholder-data';
 
