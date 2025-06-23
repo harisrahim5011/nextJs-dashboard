@@ -88,23 +88,23 @@ export const createUser = async (usersData: UserData) => {
 //   }
 // }
 
-const insertInvoices = async (invoicesData: InvoiceData) => {
-  try {
-    // Insert multiple invoices and handle conflicts
-    const insertedInvoices = await db
-      .insert(invoicesTable)
-      .values(invoicesData) // The data you want to insert
-      .onConflictDoNothing(); // Handle conflict on the id column
-      // .onConflictDoNothing({ target: invoicesTable.customer_id }); // Handle conflict on the id column
-      // .returning(); // Optionally, return the inserted rows (you can also return specific fields)
-    // .onConflict((conflict) => conflict.column(invoices.id).doNothing()) // Handle conflict on the id column
+// const insertInvoices = async (invoicesData: InvoiceData) => {
+//   try {
+//     // Insert multiple invoices and handle conflicts
+//     const insertedInvoices = await db
+//       .insert(invoicesTable)
+//       .values(invoicesData) // The data you want to insert
+//       .onConflictDoNothing(); // Handle conflict on the id column
+//       // .onConflictDoNothing({ target: invoicesTable.customer_id }); // Handle conflict on the id column
+//       // .returning(); // Optionally, return the inserted rows (you can also return specific fields)
+//     // .onConflict((conflict) => conflict.column(invoices.id).doNothing()) // Handle conflict on the id column
 
-    return insertedInvoices;
-  } catch (error) {
-    console.error('Error inserting invoices:', error);
-    throw error;
-  }
-};
+//     return insertedInvoices;
+//   } catch (error) {
+//     console.error('Error inserting invoices:', error);
+//     throw error;
+//   }
+// };
 
 // Call the insert function for invoices
 // insertInvoices(invoices).then((result) => {
@@ -114,20 +114,20 @@ const insertInvoices = async (invoicesData: InvoiceData) => {
 // });
 
 //function to insert customer
-const insertCustomer = async (customerData: CustomerData) => {
-  try {
-    const insertedCustomer = await db
-      .insert(customersTable)
-      .values(customerData);
-    // .returning(); // Optionally, you can return the inserted data
+// const insertCustomer = async (customerData: CustomerData) => {
+//   try {
+//     const insertedCustomer = await db
+//       .insert(customersTable)
+//       .values(customerData);
+//     // .returning(); // Optionally, you can return the inserted data
 
-    console.log('Inserted customer:', insertedCustomer);
-    return insertedCustomer;
-  } catch (error) {
-    console.error('Error inserting customer:', error);
-    throw error;
-  }
-};
+//     console.log('Inserted customer:', insertedCustomer);
+//     return insertedCustomer;
+//   } catch (error) {
+//     console.error('Error inserting customer:', error);
+//     throw error;
+//   }
+// };
 
 
 function returning() {
@@ -135,20 +135,20 @@ function returning() {
 }
 
 // insert revenue
-const insertRevenue = async (revenueData: RevenueData) => {
-  try {
-    const insertedRevenue = await db
-      .insert(revenueTable)
-      .values(revenueData);
-    // .returning(); // Optionally, you can return the inserted data
+// const insertRevenue = async (revenueData: RevenueData) => {
+//   try {
+//     const insertedRevenue = await db
+//       .insert(revenueTable)
+//       .values(revenueData);
+//     // .returning(); // Optionally, you can return the inserted data
 
-    console.log('Inserted revenue:', insertedRevenue);
-    return insertedRevenue;
-  } catch (error) {
-    console.error('Error inserting revenue:', error);
-    throw error;
-  }
-};
+//     console.log('Inserted revenue:', insertedRevenue);
+//     return insertedRevenue;
+//   } catch (error) {
+//     console.error('Error inserting revenue:', error);
+//     throw error;
+//   }
+// };
 
 
 
@@ -168,18 +168,18 @@ async function main() {
 
 }
 
-main();
+// main();
 // customersTable, invoicesTable, revenueTable, usersTable 
 //delete table rows
-async function deleteTable(params: any) {
-  try {
-    await db.delete(params);
-    console.log('deleted successfully')
-  } catch (error) {
-    console.error('error occured while trying deleting a table ', error)
-    throw error
-  }
-}
+// async function deleteTable(params: any) {
+//   try {
+//     await db.delete(params);
+//     console.log('deleted successfully')
+//   } catch (error) {
+//     console.error('error occured while trying deleting a table ', error)
+//     throw error
+//   }
+// }
 
 // deleteTable(customersTable);
 // deleteTable(invoicesTable);
